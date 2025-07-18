@@ -1,6 +1,7 @@
 #Imports
 import numpy as np
 import pandas as pd
+import base64
 import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
@@ -295,6 +296,16 @@ custo_df = pd.DataFrame(list(Custo_Energia.items()), columns=['Bomba', 'Custo di
 custo_df = custo_df.sort_values(by='Custo diário')
 # Show in Streamlit
 st.dataframe(custo_df, use_container_width=True)
+
+
+# Read the image and convert to base64
+def get_base64_image(image_path):
+    with open(image_path, "rb") as img_file:
+        b64_data = base64.b64encode(img_file.read()).decode()
+    return b64_data
+
+# Load base64 image
+logo_base64 = get_base64_image("image.png")
 
 st.markdown(
     f"""
