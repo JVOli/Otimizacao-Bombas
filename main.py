@@ -296,3 +296,19 @@ custo_df = custo_df.sort_values(by='Custo diário')
 # Show in Streamlit
 st.dataframe(custo_df, use_container_width=True)
 
+st.markdown(
+    f"""
+    <style>
+        .footer-logo {{
+            position: fixed;
+            right: 30px;
+            bottom: 30px;
+            z-index: 100;
+        }}
+    </style>
+    <div class="footer-logo">
+        <img src="data:image/png;base64,{logo_base64}" width="80">
+    </div>
+    """,
+    unsafe_allow_html=True
+)
