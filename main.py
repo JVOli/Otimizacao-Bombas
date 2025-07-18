@@ -12,6 +12,33 @@ st.set_page_config(
     page_icon="image.png",
     layout="wide",
 )
+
+# Read the image and convert to base64
+def get_base64_image(image_path):
+    with open(image_path, "rb") as img_file:
+        b64_data = base64.b64encode(img_file.read()).decode()
+    return b64_data
+
+# Load base64 image
+logo_base64 = get_base64_image("logotipo_iph.png")
+
+st.markdown(
+    f"""
+    <style>
+        .footer-logo {{
+            position: fixed;
+            right: 30px;
+            bottom: 30px;
+            z-index: 100;
+        }}
+    </style>
+    <div class="footer-logo">
+        <img src="data:image/png;base64,{logo_base64}" width="80">
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
 #
 col1, col2 = st.columns((1,3))
 k2 = [0.74,0.66,0.61,0.59,0.58,0.60,0.77,0.94,1.08,1.20, 
@@ -32,9 +59,8 @@ with col2:
     #st.markdown(list(float(edited_df.iloc[i]["Fator K2"]) for i in range(0,24)))
 Coef_HW = {"Aço": 135, "Aço Galvanizado": 125, "Cobre": 130, "Chumbo": 130, "Latão": 130, "PVC": 140, "Ferro Fundido Revestido": 130, "Ferro Fundido Novo": 125, "Ferro Fundido Usado": 90, "Concreto": 120}
 with st.sidebar:
-    st.image("logotipo_iph.png", width=130)
+    st.image("assets_task_01k0e16ztfew4vwdfttqmwejhe_1752817766_img_0-removebg-preview (1).png", width=150)
 with st.sidebar.expander("Dados rede"):
-    st.image("assets_task_01k0e16ztfew4vwdfttqmwejhe_1752817766_img_0-removebg-preview (1).png", width=130)
     L_suc = st.number_input("Comprimento de sucção da rede em metros:")
     L_rec = st.number_input("Comprimento de recalque da rede em metros:")
     Sing_suc = st.number_input("Singularidades na sucção da rede")
@@ -300,29 +326,3 @@ custo_df = custo_df.sort_values(by='Custo diário')
 # Show in Streamlit
 st.dataframe(custo_df, use_container_width=True)
 
-
-# Read the image and convert to base64
-def get_base64_image(image_path):
-    with open(image_path, "rb") as img_file:
-        b64_data = base64.b64encode(img_file.read()).decode()
-    return b64_data
-
-# Load base64 image
-logo_base64 = get_base64_image("logotipo_iph.png")
-
-st.markdown(
-    f"""
-    <style>
-        .footer-logo {{
-            position: fixed;
-            right: 30px;
-            bottom: 30px;
-            z-index: 100;
-        }}
-    </style>
-    <div class="footer-logo">
-        <img src="data:image/png;base64,{logo_base64}" width="80">
-    </div>
-    """,
-    unsafe_allow_html=True
-)
