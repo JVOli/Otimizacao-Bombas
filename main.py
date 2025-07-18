@@ -9,7 +9,7 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
 
 st.set_page_config(
-    page_icon="assets_task_01k0e16ztfew4vwdfttqmwejhe_1752817766_img_0-removebg-preview (1).png",
+    page_icon="image.png",
     layout="wide",
 )
 #
@@ -32,6 +32,7 @@ with col2:
     #st.markdown(list(float(edited_df.iloc[i]["Fator K2"]) for i in range(0,24)))
 Coef_HW = {"Aço": 135, "Aço Galvanizado": 125, "Cobre": 130, "Chumbo": 130, "Latão": 130, "PVC": 140, "Ferro Fundido Revestido": 130, "Ferro Fundido Novo": 125, "Ferro Fundido Usado": 90, "Concreto": 120}
 with st.sidebar.expander("Dados rede"):
+    st.image("assets_task_01k0e16ztfew4vwdfttqmwejhe_1752817766_img_0-removebg-preview (1).png", width=130)
     L_suc = st.number_input("Comprimento de sucção da rede em metros:")
     L_rec = st.number_input("Comprimento de recalque da rede em metros:")
     Sing_suc = st.number_input("Singularidades na sucção da rede")
@@ -305,7 +306,7 @@ def get_base64_image(image_path):
     return b64_data
 
 # Load base64 image
-logo_base64 = get_base64_image("image.png")
+logo_base64 = get_base64_image("logotipo_iph.png")
 
 st.markdown(
     f"""
