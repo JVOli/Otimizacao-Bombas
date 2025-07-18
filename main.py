@@ -9,7 +9,7 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
 
 st.set_page_config(
-    page_icon="image.png",
+    page_icon="assets_task_01k0e16ztfew4vwdfttqmwejhe_1752817766_img_0-removebg-preview (1).png",
     layout="wide",
 )
 #
@@ -318,7 +318,7 @@ st.markdown(
         }}
     </style>
     <div class="footer-logo">
-        <img src="image/png;base64,{logo_base64}" width="80">
+        <img src="data:image/png;base64,{logo_base64}" width="80">
     </div>
     """,
     unsafe_allow_html=True
