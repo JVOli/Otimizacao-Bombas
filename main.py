@@ -51,7 +51,9 @@ df = pd.DataFrame(
 )
 df.set_index('Horário', inplace=True)
 with col1:
-    st.image("image.png", width=150)
+    col1_1, col2_1, col1_3 = st.columns((1,5,1))
+    with col1_2:
+        st.image("image.png", width=150)
     edited_df = st.data_editor(df)
 with col2:
     col1_2, col2_2 = st.columns((1,1))
