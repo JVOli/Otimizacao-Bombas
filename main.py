@@ -7,6 +7,10 @@ import streamlit as st
 from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
 
+st.set_page_config(
+    page_icon="images/marujo_icon.png",
+    layout="wide",
+)
 #
 col1, col2 = st.columns((1,3))
 k2 = [0.74,0.66,0.61,0.59,0.58,0.60,0.77,0.94,1.08,1.20, 
