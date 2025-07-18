@@ -8,7 +8,7 @@ from sklearn.preprocessing import PolynomialFeatures
 from sklearn.linear_model import LinearRegression
 
 st.set_page_config(
-    page_icon="images/marujo_icon.png",
+    page_icon="image.png",
     layout="wide",
 )
 #
