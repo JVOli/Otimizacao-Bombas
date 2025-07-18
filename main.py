@@ -307,7 +307,7 @@ st.markdown(
         }}
     </style>
     <div class="footer-logo">
-        <img src="data:image/png;base64,{logo_base64}" width="80">
+        <img src="image/png;base64,{logo_base64}" width="80">
     </div>
     """,
     unsafe_allow_html=True
