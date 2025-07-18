@@ -51,10 +51,14 @@ df = pd.DataFrame(
 )
 df.set_index('Horário', inplace=True)
 with col1:
-    Consumo = st.number_input("Consumo base m³/h")
-    k1 = st.number_input("Fator Maior dia de Consumo")
+    st.image("assets_task_01k0e16ztfew4vwdfttqmwejhe_1752817766_img_0-removebg-preview (1).png", width=150)
     edited_df = st.data_editor(df)
 with col2:
+    col1_2, col2_2 = st.columns((1,1))
+    with col1_2:
+            Consumo = st.number_input("Consumo base m³/h")
+    with col2_2:
+        k1 = st.number_input("Fator Maior dia de Consumo")
     st.line_chart(edited_df * k1 * Consumo)
     #st.markdown(list(float(edited_df.iloc[i]["Fator K2"]) for i in range(0,24)))
 Coef_HW = {"Aço": 135, "Aço Galvanizado": 125, "Cobre": 130, "Chumbo": 130, "Latão": 130, "PVC": 140, "Ferro Fundido Revestido": 130, "Ferro Fundido Novo": 125, "Ferro Fundido Usado": 90, "Concreto": 120}
