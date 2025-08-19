@@ -12,7 +12,7 @@ st.set_page_config(
     page_icon="image.png",
     layout="wide",
 )
-st.title("Teste")
+
 # Read the image and convert to base64
 def get_base64_image(image_path):
     with open(image_path, "rb") as img_file:
