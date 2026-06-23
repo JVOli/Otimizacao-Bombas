@@ -116,8 +116,16 @@
 
         <!-- Main Content -->
         <main class="main-content">
+            <!-- Tab Navigation -->
+            <nav class="tab-nav">
+                <button class="tab-btn active" data-tab="tab-calculo">Calculo</button>
+                <button class="tab-btn" data-tab="tab-cadastro">Cadastro de Bombas</button>
+            </nav>
+
             <div class="error-msg" id="error-msg"></div>
 
+            <!-- Tab: Calculo -->
+            <div id="tab-calculo" class="tab-panel active">
             <div id="results">
                 <!-- Demand Profile -->
                 <div class="section">
@@ -248,6 +256,47 @@
                     </div>
                 </div>
             </div>
+            </div>
+
+            <!-- Tab: Cadastro de Bombas -->
+            <div id="tab-cadastro" class="tab-panel">
+                <div class="section">
+                    <div class="section-title">Cadastro de Bomba Personalizada</div>
+                    <div class="card">
+                        <div class="form-group-main">
+                            <label>Nome da bomba</label>
+                            <input type="text" id="pump-name" placeholder="Ex: Bomba KSB 50-200" maxlength="200">
+                        </div>
+
+                        <div class="section-subtitle">Pontos da curva (min. 3 pontos)</div>
+                        <div class="curve-points-header">
+                            <span>#</span>
+                            <span>Vazao (m3/h)</span>
+                            <span>Altura (m)</span>
+                            <span>Rendimento (%)</span>
+                            <span></span>
+                        </div>
+                        <div id="curve-points"></div>
+                        <button class="btn-secondary" id="btn-add-point">+ Adicionar ponto</button>
+
+                        <div style="margin-top: 20px; display: flex; gap: 12px;">
+                            <button class="btn-calculate" id="btn-save-pump" style="flex:1">Salvar Bomba</button>
+                            <button class="btn-secondary" id="btn-preview-curve" style="flex:0 0 auto; padding: 12px 20px;">Visualizar Curva</button>
+                        </div>
+
+                        <div class="chart-container" id="chart-preview" style="min-height: 300px; margin-top: 16px; display: none;"></div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">Bombas Cadastradas</div>
+                    <div class="card">
+                        <div id="custom-pumps-list">
+                            <p class="text-muted">Nenhuma bomba cadastrada ainda.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
 
@@ -258,5 +307,6 @@
     <script src="/static/js/api.js"></script>
     <script src="/static/js/charts.js"></script>
     <script src="/static/js/app.js"></script>
+    <script src="/static/js/pumps.js"></script>
 </body>
 </html>
