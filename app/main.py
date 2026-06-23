@@ -126,7 +126,7 @@ async def delete_custom_pump(pump_id: int, db: Session = Depends(get_db)):
 
 
 @app.post("/api/calculate", response_model=CalculationResult)
-async def calculate(inp: CalculationInput):
+async def calculate(inp: CalculationInput, db: Session = Depends(get_db)):
     if inp.material not in HAZEN_WILLIAMS_COEFFICIENTS:
         raise HTTPException(status_code=400, detail=f"Material '{inp.material}' não encontrado")
 
@@ -142,7 +142,6 @@ async def calculate(inp: CalculationInput):
     vel_suc = calc_velocity(q_design, inp.d_suc)
     vel_rec = calc_velocity(q_design, inp.d_rec)
 
-    # BUG FIX: suction uses d_suc (was d_rec in original)
     loss_lin_suc = calc_hazen_williams_loss(q_design, inp.d_suc, inp.material, inp.l_suc)
     loss_lin_rec = calc_hazen_williams_loss(q_design, inp.d_rec, inp.material, inp.l_rec)
     loss_sing_suc = calc_singular_loss(vel_suc["value"], inp.sing_suc)
@@ -165,7 +164,14 @@ async def calculate(inp: CalculationInput):
     efficiencies = []
 
     for pump_sheet in inp.selected_pumps:
-        curve_data = get_pump_curve(pump_sheet)
+        if pump_sheet.startswith("custom:") and db is not None:
+            pump_id = int(pump_sheet.split(":")[1])
+            p = db.query(CustomPump).filter(CustomPump.id == pump_id).first()
+            if p is None:
+                continue
+            curve_data = {"vazao": p.vazao, "altura": p.altura, "rendimento": p.rendimento or []}
+        else:
+            curve_data = get_pump_curve(pump_sheet)
         if curve_data is None:
             continue
 
