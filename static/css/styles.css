@@ -333,6 +333,150 @@ body {
 ::-webkit-scrollbar-thumb { background: rgba(26, 39, 68, 0.2); border-radius: 3px; }
 .sidebar::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); }
 
+/* ===== Tabs ===== */
+.tab-nav {
+    display: flex;
+    gap: 0;
+    margin-bottom: 24px;
+    border-bottom: 2px solid var(--border);
+}
+
+.tab-btn {
+    padding: 10px 24px;
+    border: none;
+    background: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-light);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: color 0.2s, border-color 0.2s;
+}
+.tab-btn:hover { color: var(--navy); }
+.tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* ===== Pump Registration Form ===== */
+.form-group-main { margin-bottom: 16px; }
+.form-group-main label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin-bottom: 6px;
+}
+.form-group-main input[type="text"] {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    color: var(--text);
+    transition: border-color 0.2s;
+}
+.form-group-main input[type="text"]:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(46,134,222,0.15);
+}
+
+.section-subtitle {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--navy);
+    margin: 16px 0 8px;
+}
+
+.curve-points-header {
+    display: grid;
+    grid-template-columns: 36px 1fr 1fr 1fr 36px;
+    gap: 8px;
+    padding: 6px 0;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--text-light);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 4px;
+}
+
+.curve-point-row {
+    display: grid;
+    grid-template-columns: 36px 1fr 1fr 1fr 36px;
+    gap: 8px;
+    align-items: center;
+    padding: 4px 0;
+}
+.curve-point-row .point-num {
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-light);
+    font-weight: 600;
+}
+.curve-point-row input {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    color: var(--text);
+    transition: border-color 0.2s;
+}
+.curve-point-row input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 2px rgba(46,134,222,0.15);
+}
+
+.btn-remove-point {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: #fdecea;
+    color: var(--danger);
+    border-radius: var(--radius-sm);
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.15s;
+}
+.btn-remove-point:hover { background: #f9c4be; }
+
+.btn-secondary {
+    padding: 8px 16px;
+    background: var(--bg);
+    color: var(--navy);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: background 0.15s;
+}
+.btn-secondary:hover { background: var(--border); }
+
+.btn-delete {
+    padding: 4px 12px;
+    background: #fdecea;
+    color: var(--danger);
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.btn-delete:hover { background: #f9c4be; }
+
+.text-muted { color: var(--text-light); font-size: 0.9rem; }
+
 /* ===== Logo footer ===== */
 .logo-footer {
     position: fixed;

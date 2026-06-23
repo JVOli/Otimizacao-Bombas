@@ -1,12 +1,14 @@
 import os
 import numpy as np
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from pathlib import Path
+from sqlalchemy.orm import Session
 
 from .config import HAZEN_WILLIAMS_COEFFICIENTS, DEFAULT_K2_FACTORS, MATERIALS
-from .models import CalculationInput, CalculationResult
+from .models import CalculationInput, CalculationResult, CustomPumpInput
+from typing import Optional
 from .calculations import (
     calc_demand_profile,
     calc_economic_diameter,
@@ -20,8 +22,14 @@ from .calculations import (
     calc_energy_cost,
 )
 from .pump_data import get_pump_catalog, get_pump_curve
+from .database import init_db, get_db, CustomPump
 
 app = FastAPI(title="Otimização de Bombas", version="2.0.0")
+
+
+@app.on_event("startup")
+def startup():
+    init_db()
 
 STATIC_DIR = Path(__file__).parent.parent / "static"
 app.mount("/static", StaticFiles(directory=str(STATIC_DIR)), name="static")
@@ -42,16 +50,79 @@ async def get_config():
 
 
 @app.get("/api/pumps")
-async def list_pumps():
-    return get_pump_catalog()
+async def list_pumps(db: Session = Depends(get_db)):
+    catalog = get_pump_catalog()
+    if db is not None:
+        custom = db.query(CustomPump).order_by(CustomPump.name).all()
+        for p in custom:
+            catalog.append({"name": p.name, "sheet_name": f"custom:{p.id}", "custom": True})
+    return catalog
 
 
 @app.get("/api/pumps/{sheet_name}/curve")
-async def pump_curve(sheet_name: str):
+async def pump_curve(sheet_name: str, db: Session = Depends(get_db)):
+    if sheet_name.startswith("custom:") and db is not None:
+        pump_id = int(sheet_name.split(":")[1])
+        p = db.query(CustomPump).filter(CustomPump.id == pump_id).first()
+        if p:
+            return {"vazao": p.vazao, "altura": p.altura, "rendimento": p.rendimento or []}
+        raise HTTPException(status_code=404, detail="Bomba customizada não encontrada")
     data = get_pump_curve(sheet_name)
     if data is None:
         raise HTTPException(status_code=404, detail="Bomba não encontrada")
     return data
+
+
+@app.get("/api/custom-pumps")
+async def list_custom_pumps(db: Session = Depends(get_db)):
+    if db is None:
+        return []
+    pumps = db.query(CustomPump).order_by(CustomPump.name).all()
+    return [
+        {
+            "id": p.id,
+            "name": p.name,
+            "vazao": p.vazao,
+            "altura": p.altura,
+            "rendimento": p.rendimento or [],
+        }
+        for p in pumps
+    ]
+
+
+@app.post("/api/custom-pumps", status_code=201)
+async def create_custom_pump(pump: CustomPumpInput, db: Session = Depends(get_db)):
+    if db is None:
+        raise HTTPException(status_code=503, detail="Banco de dados não configurado")
+    if len(pump.vazao) != len(pump.altura):
+        raise HTTPException(status_code=400, detail="Vazão e altura devem ter o mesmo número de pontos")
+    if pump.rendimento and len(pump.rendimento) != len(pump.vazao):
+        raise HTTPException(status_code=400, detail="Rendimento deve ter o mesmo número de pontos que vazão")
+    existing = db.query(CustomPump).filter(CustomPump.name == pump.name).first()
+    if existing:
+        raise HTTPException(status_code=409, detail=f"Bomba '{pump.name}' já existe")
+    row = CustomPump(
+        name=pump.name,
+        vazao=pump.vazao,
+        altura=pump.altura,
+        rendimento=pump.rendimento or [],
+    )
+    db.add(row)
+    db.commit()
+    db.refresh(row)
+    return {"id": row.id, "name": row.name}
+
+
+@app.delete("/api/custom-pumps/{pump_id}")
+async def delete_custom_pump(pump_id: int, db: Session = Depends(get_db)):
+    if db is None:
+        raise HTTPException(status_code=503, detail="Banco de dados não configurado")
+    row = db.query(CustomPump).filter(CustomPump.id == pump_id).first()
+    if not row:
+        raise HTTPException(status_code=404, detail="Bomba não encontrada")
+    db.delete(row)
+    db.commit()
+    return {"ok": True}
 
 
 @app.post("/api/calculate", response_model=CalculationResult)

@@ -80,6 +80,13 @@ class DemandPoint(BaseModel):
     demanda: float
 
 
+class CustomPumpInput(BaseModel):
+    name: str = Field(min_length=1, max_length=200, description="Nome da bomba")
+    vazao: list[float] = Field(min_length=3, description="Pontos de vazão (m³/h)")
+    altura: list[float] = Field(min_length=3, description="Pontos de altura (m)")
+    rendimento: list[float] = Field(default=[], description="Pontos de rendimento (%)")
+
+
 class CalculationResult(BaseModel):
     demand_profile: list[DemandPoint]
     diameters: DiameterResult
